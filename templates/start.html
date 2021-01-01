@@ -1,0 +1,8 @@
+{{block "main" .}}
+<article class="main-content">{{.Content}}</article>
+{{with .Blog}}
+    <p>Here are my latest blog entries:</p>
+    {{template "article_list" .}}
+    <p><a href="/blog">Read more blog entries</a>.</p>
+{{end}}
+{{end}}

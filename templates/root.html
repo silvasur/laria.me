@@ -1,0 +1,66 @@
+{{- define "article_meta"}}
+    <dl class="meta">
+        <div>
+            <dt>Published</dt>
+            <dd><time datetime="2006-01-02T15:04:05-0700">{{.Published.Format "Mon, Jan 2 2006, 15:04"}}</time></dd>
+        </div>
+        {{with .Tags}}
+        <div>
+            <dt>Tags</dt>
+            <dd><ul class="article-tags">{{range .}}
+                <li><a href="/blog/tags/{{.}}">{{.}}</a></li>
+            {{end}}</ul></dd>
+        </div>
+        {{end}}
+    </dl>
+{{end -}}
+{{- define "article_list"}}
+    {{range .}}
+        {{- $year := .Published.Format "2006" -}}
+        {{- $month := .Published.Format "01" -}}
+        {{- $day := .Published.Format "02" -}}
+        <article>
+            <h2><a href="/blog/{{$year}}/{{$month}}/{{$day}}/{{.Slug}}">{{.Title}}</a></h2>
+            {{template "article_meta" .}}
+            <div class="content">{{.Content}}</div>
+            {{if .ReadMore -}}
+                <p class="readmore-outer"><a href="/blog/{{$year}}/{{$month}}/{{$day}}/{{.Slug}}">Read more ...</a></p>
+            {{- end}}
+        </article>
+    {{end}}
+{{end -}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{with .Title}}{{.}} - {{end}}laria.me</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/syntax.css">
+    <link rel="alternate" type="application/atom+xml" href="/blog/feed.xml" title="Atom-Feed of the blog">
+    <link rel="author" href="/about-me" />
+    <meta name="author" content="Laria Carolin Chabowski" />
+    <meta name="description" content="Laria's website. They mainly write about adventures in programming but will also occasionally write about other things that interest them." />
+    <meta name="keywords" content="programming,blog,golang,php,music,links,gsrm,lgbt,lgbtq,genderqueer,trans,technology,web,opensource" />
+</head>
+<body>
+    <a href="#maincontent" class="skip-to-main-content">Skip to main content</a>
+    <header>
+        <a href="/" class="logolink">laria.me</a>
+        <nav>
+        {{ range .Menu }}
+            <!-- TODO: Label menus for screenreaders -->
+            <ul class="menu-level">{{ range . }}
+                <li {{ if .Active }}class="cur"{{ end }}><a href="{{ .Url }}">{{ .Title }}</a></li>
+            {{ end }}</ul>
+        {{ end }}
+        </nav>
+    </header>
+    <main id="maincontent">{{ template "main" .Main }}</main>
+    <footer>
+        <p>Contents of this page is copyrighted under the [WTFPL](http://www.wtfpl.net), unless noted otherwise. The content of the linked pages is © of their respective owners. You can contact me via email: <code>laria (minus) blog (at) laria (dot) me</code>.</p>
+        <p>If you really need more info, use the <a href="/impressum">Impressum</a>.</p>
+    </footer>
+</body>
+</html>

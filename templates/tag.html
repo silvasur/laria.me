@@ -1,0 +1,13 @@
+{{define "main"}}
+<h1>Tag: {{.Tag}}</h1>
+{{with .Articles}}
+    {{template "article_list" .}}
+{{else}}
+    <p>Nothing found</p>
+{{end}}
+
+{{if gt .Pages 1}}
+    <p>{{pagination .Pages .Page (concat "/blog/tags/" .Tag)}}</p>
+{{end}}
+
+{{end}}

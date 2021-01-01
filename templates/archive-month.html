@@ -1,0 +1,16 @@
+{{define "main"}}
+{{- $year := .Year -}}
+{{- $month := .Month -}}
+<h1>{{month_text .Month}} <a href="{{archive_link .Year}}">{{.Year}}</a></h1>
+{{with .Days}}
+<ul>
+    {{range .}}
+        <li><a href="{{archive_link $year $month .Num}}">{{day_text $year $month .Num}} [{{.Count}}]</a>
+    {{end}}
+</ul>
+{{else}}
+<p>Nothing for this month.</p>
+{{end}}
+
+<p><a href="{{archive_link .Year (add .Month -1)}}" rel="prev">&lt; Previous</a> | <a href="{{archive_link .Year (add .Month 1)}}" rel="next">Next &gt;</a></p>
+{{end}}

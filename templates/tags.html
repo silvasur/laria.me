@@ -1,0 +1,6 @@
+{{define "main"}}
+<h1>Tags</h1>
+{{with .Tags}}<ul class="tagcloud">{{range .}}
+    <li class="tc-{{.SizeClass}}"><a href="/blog/tags/{{.Tag}}">{{.Tag}}</a></li>
+{{end}}</ul>{{end}}
+{{end}}

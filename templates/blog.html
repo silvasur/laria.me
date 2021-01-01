@@ -1,0 +1,12 @@
+{{define "main"}}
+{{with .Articles}}
+    {{template "article_list" .}}
+{{else}}
+    <p>Nothing found</p>
+{{end}}
+
+{{if gt .Pages 1}}
+    <p>{{pagination .Pages .Page "/blog"}}</p>
+{{end}}
+
+{{end}}

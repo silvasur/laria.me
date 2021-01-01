@@ -1,0 +1,12 @@
+{{define "main"}}
+<h1>Archive</h1>
+{{with .Years}}
+<ul>
+    {{range .}}
+        <li><a href="{{archive_link .Num}}">{{.Num}} [{{.Count}}]</a>
+    {{end}}
+</ul>
+{{else}}
+<p>Nothing yet :(</p>
+{{end}}
+{{end}}

@@ -1,0 +1,21 @@
+{{define "main"}}
+<form action="/blog/search" method="get">
+    <label>Search terms: <input type="text" name="q" value="{{.Q}}"></label>
+    <button type="submit">Go</button>
+    <!-- TODO: Form looks ugly, especially in dark mode -->
+</form>
+
+{{if .Q}}
+{{if gt .Total 0}}
+    <h1>Results ({{.Total}} total)</h1>
+    {{template "article_list" .Results}}
+
+    {{if gt .Pages 1}}
+        <p>{{pagination .Pages .Page "/blog/search" "q" .Q}}</p>
+    {{end}}
+{{else}}
+    <p>Nothing found</p>
+{{end}}
+{{end}}
+
+{{end}}
