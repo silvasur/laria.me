@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	ContentRoot  string
+	ArticleDirs  []string
 	DbDsn        string
 	TemplatePath string
 	StaticPath   string `json:",omitempty"`

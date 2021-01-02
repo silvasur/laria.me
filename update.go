@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path"
 	"path/filepath"
 
 	"code.laria.me/laria.me/article"
@@ -15,7 +14,6 @@ import (
 )
 
 func allArticlesFromDir(dir string) ([]article.Article, error) {
-	log.Printf("allArticlesFromDir(%s)", dir)
 	f, err := os.Open(dir)
 	if err != nil {
 		return nil, err
@@ -47,21 +45,26 @@ func allArticlesFromDir(dir string) ([]article.Article, error) {
 }
 
 func updateArticles(conf *config.Config, db *sql.DB) {
-	articles, err := allArticlesFromDir(path.Join(conf.ContentRoot, "articles"))
-	if err != nil {
-		log.Fatalf("allArticlesFromDir(): %s", err)
+	articles := []article.Article{}
+	for _, dir := range conf.ArticleDirs {
+		dirArticles, err := allArticlesFromDir(dir)
+		if err != nil {
+			log.Fatalf("allArticlesFromDir(%s): %s", dir, err)
+		}
+
+		articles = append(articles, dirArticles...)
 	}
 
 	slugs := make([]string, 0, len(articles))
 	for _, article := range articles {
-		if _, err = article.SaveToDb(db); err != nil {
+		if _, err := article.SaveToDb(db); err != nil {
 			log.Fatalf("SaveToDb: %s", err)
 		}
 
 		slugs = append(slugs, article.Slug)
 	}
 
-	if err = article.DeleteArticlesFromDbExcept(db, slugs); err != nil {
+	if err := article.DeleteArticlesFromDbExcept(db, slugs); err != nil {
 		log.Fatalf("DeleteArticlesFromDbExcept: %s", err)
 	}
 }
