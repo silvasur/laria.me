@@ -427,7 +427,13 @@ func (ctx *serveContext) handleArchiveDay(w http.ResponseWriter, r *http.Request
 	day, _ := strconv.Atoi(vars["day"])
 
 	articles, _, err := viewArticlesFromDb(db, 1, `
-		SELECT article_id, published, slug, title, full_html, 0 AS ReadMore
+		SELECT
+			article_id,
+			published,
+			slug,
+			title,
+			IF(summary_html = '', full_html, summary_html),
+			summary_html != '' AS ReadMore
 		FROM article
 		WHERE
 			YEAR(published) = ?
